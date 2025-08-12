@@ -1,0 +1,23 @@
+{
+  "name": "order-room",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rerey155-del/Order-Room.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rerey155-del/Order-Room/issues"
+  },
+  "homepage": "https://github.com/Rerey155-del/Order-Room#readme",
+  "description": "",
+  "dependencies": {
+    "prisma": "^6.13.0"
+  }
+}
