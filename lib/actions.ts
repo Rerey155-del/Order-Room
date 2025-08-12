@@ -7,21 +7,31 @@ export const ContactMessage = async (prevState: unknown, formData: FormData) => 
     const validatedFields = ContactSchema.safeParse(Object.fromEntries(formData))
 
     if (!validatedFields.success) {
-        return { error: validatedFields.error.flatten().fieldErrors };
+        return {
+            message: "Please fix the errors below",
+            success: false,
+            error: validatedFields.error.flatten().fieldErrors
+        }
     }
-    const { name, email, subject, message } = validatedFields.data;
+
+    const { name, email, subject, message } = validatedFields.data
 
     try {
         await prisma.contact.create({
-            data: {
-                name,
-                email,
-                subject,
-                message,
-            }
-        });
-        return { success: "Message sent successfully" };
-    } catch (error) {
-        console.log(error);
+            data: { name, email, subject, message }
+        })
+
+        return {
+            message: "Message sent successfully",
+            success: true,
+            error: {}
+        }
+    } catch (err) {
+        console.error(err)
+        return {
+            message: "Something went wrong while saving your message",
+            success: false,
+            error: {}
+        }
     }
 }
