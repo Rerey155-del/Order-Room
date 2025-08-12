@@ -8,11 +8,16 @@ const ContactForm = () => {
     const [state, formAction] = useActionState(ContactMessage, null)
     return (
         <div className='bg-white p-8 rounded-md shadow-sm'>
-            {state?.message? (
-                <div className='p-4 mb-4 text-sm text-gray-800 rounded-lg bg-green-50' role='alert'>
-                    <div className='font-medium'>{state.message}</div>
+            {state?.error && (
+                <div className='p-4 mb-4 text-sm text-gray-800 rounded-lg bg-red-50' role='alert'>
+                    <div className='font-medium'>There were some errors with your submission:</div>
+                    <ul className='list-disc list-inside'>
+                        {Object.values(state.error).map((error, index) => (
+                            <li key={index}>{error}</li>
+                        ))}
+                    </ul>
                 </div>
-            ):null}
+            )}
             <form action={formAction}>
                 <div className='grid md:grid-cols-2 gap-7 mt-6'>
                     <div>

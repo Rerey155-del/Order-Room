@@ -17,7 +17,7 @@ export const ContactMessage = async (prevState: unknown, formData: FormData) => 
                 name,
                 email,
                 subject,
-                message
+                message,
             }
         });
         return { success: "Message sent successfully" };
