@@ -13,13 +13,6 @@ const Navlink = () => {
     const { data: session, status } = useSession()
     const router = useRouter()
 
-    // Redirect ke homepage saat sudah login
-    useEffect(() => {
-        if (status === "authenticated") {
-            router.push("/")
-        }
-    }, [status, router])
-
     const handleSignOut = () => {
         signOut({ callbackUrl: "/" })
         setDropdownOpen(false)
