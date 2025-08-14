@@ -1,37 +1,82 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
-import { ContactSchema } from "@/lib/zod"
+import { ContactSchema, RoomSchema } from "@/lib/zod"
+import { redirect } from "next/navigation"
 
-export const ContactMessage = async (prevState: unknown, formData: FormData) => {
-    const validatedFields = ContactSchema.safeParse(Object.fromEntries(formData))
+export const saveRoom = async (image: string, prevState: unknown, formData: FormData) => {
+    if (!image) return { message: "Image is Required" }
 
+    const rawData = {
+        name: formData.get("name"),
+        description: formData.get("description"),
+        capacity: formData.get("capacity"),
+        price: formData.get("price"), // Ensure RoomSchema expects 'price'
+        amenities: formData.getAll("amenities"),
+    };
+
+    const validatedFields = RoomSchema.safeParse(rawData);
     if (!validatedFields.success) {
         return {
-            message: "Please fix the errors below",
-            success: false,
             error: validatedFields.error.flatten().fieldErrors
         }
     }
 
-    const { name, email, subject, message } = validatedFields.data
+    const { name, description, price, amenities, capacity } = validatedFields.data;
 
     try {
-        await prisma.contact.create({
-            data: { name, email, subject, message }
-        })
+        await prisma.room.create({
+            data: {
+                name,
+                description,
+                image, // use the function parameter 'image'
+                price,
+                capacity,
+                RoomAmenities: {
+                    createMany: {
+                        data: amenities.map((item) => ({
+                            amenitiesId: item
+                        }))
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error(error);
+    }
 
-        return {
-            message: "Message sent successfully",
-            success: true,
-            error: {}
+    redirect("/admin/rooms")
+}
+
+    export const ContactMessage = async (prevState: unknown, formData: FormData) => {
+        const validatedFields = ContactSchema.safeParse(Object.fromEntries(formData))
+
+        if (!validatedFields.success) {
+            return {
+                message: "Please fix the errors below",
+                success: false,
+                error: validatedFields.error.flatten().fieldErrors
+            }
         }
-    } catch (err) {
-        console.error(err)
-        return {
-            message: "Something went wrong while saving your message",
-            success: false,
-            error: {}
+
+        const { name, email, subject, message } = validatedFields.data
+
+        try {
+            await prisma.contact.create({
+                data: { name, email, subject, message }
+            })
+
+            return {
+                message: "Message sent successfully",
+                success: true,
+                error: {}
+            }
+        } catch (err) {
+            console.error(err)
+            return {
+                message: "Something went wrong while saving your message",
+                success: false,
+                error: {}
+            }
         }
     }
-}
