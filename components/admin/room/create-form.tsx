@@ -1,6 +1,57 @@
+"use client"
 import { IoCloudUploadOutline } from "react-icons/io5";
+import React, { useRef, useState, useTransition } from "react";
+import Image from "next/image";
+import { type PutBlobResult } from "@vercel/blob";
+import { BarLoader } from "react-spinners";
+import { IoTrashOutline } from "react-icons/io5";
 
 const CreateForm = () => {
+    const inputFileRef = useRef<HTMLInputElement>(null);
+    const [image, setImage] = useState("")
+    const [message, setMessage] = useState("")
+    const [pending, startTransition] = useTransition();
+
+    const handleUpload = () => {
+        if (inputFileRef.current && inputFileRef.current.files && inputFileRef.current.files.length > 0) {
+            const file = inputFileRef.current.files[0];
+            const formData = new FormData();
+            formData.set("file", file);
+            startTransition(async () => {
+                try {
+                    const response = await fetch("/api/upload", {
+                        method: "PUT",
+                        body: formData,
+                    })
+
+                    const data = await response.json();
+                    if (response.status !== 200) {
+                        setMessage(data.message);
+                    }
+
+                    const img = data as PutBlobResult;
+                    setImage(img.url);
+                } catch (error) {
+                    console.log(error)
+                }
+            });
+        }
+    };
+
+    const deleteImage = ({ image }: { image: string }) => {
+        startTransition(async () => {
+            try {
+                await fetch(`/api/upload?imageUrl=${image}`, {
+                    method: "DELETE",
+                });
+                setImage("");
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    };
+
+
     return (
         <form action="" className="grid md:grid-cols-12 gap-5">
             {/* Kolom Kiri */}
@@ -50,13 +101,46 @@ const CreateForm = () => {
                     className="flex flex-col mb-4 items-center justify-center aspect-video border-2 border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 relative"
                 >
                     <div className="flex flex-col items-center justify-center text-gray-500 pt-5 pb-6 z-10">
-                        <IoCloudUploadOutline className="size-8" />
-                        <p className="mb-1 text-sm font-bold">Select Image</p>
-                        <p className="text-xs">
-                            SVG, PNG, JPG, GIF, or others (max:4mb)
-                        </p>
+
+                        {pending && <BarLoader />}
+
+                        {image ? (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={() => deleteImage({ image })}
+                                    className="flex items-center justify-center bg-transparent size-6 rounded-sm absolute right-1 top-1 text-white hover:bg-red-400"
+                                >
+                                    <IoTrashOutline className="size-4 text-transparent hover:text-white" />
+                                </button>
+                                <Image
+                                    src={image}
+                                    alt="uploaded"
+                                    width={640}
+                                    height={360}
+                                    className="rounded-md aspect-video"
+                                />
+                            </>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center">
+                                <IoCloudUploadOutline className="size-8" />
+                                <p className="mb-1 text-sm font-bold">Select Image</p>
+                                {message ? (
+                                    <p className="text-xs">{message}</p>
+                                ) : (
+                                    <p className="text-xs">SVG, PNG, JPG, GIF, or others (max:4mb)</p>
+                                )}
+                            </div>
+                        )}
+
                     </div>
-                    <input type="file" id="input-file" className="hidden" />
+
+                    {!image ? (
+
+                        <input type="file" id="input-file" ref={inputFileRef} onChange={handleUpload} className="hidden" />
+                    ) : (
+                        <Image src={image} alt="image" width={640} height={360} className="rounded-md absolute aspect-video" />
+                    )}
                 </label>
 
                 <div className="mb-4">
