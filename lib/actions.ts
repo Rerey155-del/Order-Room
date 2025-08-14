@@ -11,7 +11,7 @@ export const saveRoom = async (image: string, prevState: unknown, formData: Form
         name: formData.get("name"),
         description: formData.get("description"),
         capacity: formData.get("capacity"),
-        price: formData.get("price"), // Ensure RoomSchema expects 'price'
+        price: formData.get("price"),
         amenities: formData.getAll("amenities"),
     };
 
@@ -45,7 +45,7 @@ export const saveRoom = async (image: string, prevState: unknown, formData: Form
         console.error(error);
     }
 
-    redirect("/admin/rooms")
+    redirect("/admin/room")
 }
 
     export const ContactMessage = async (prevState: unknown, formData: FormData) => {
