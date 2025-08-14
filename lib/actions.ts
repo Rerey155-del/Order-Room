@@ -29,7 +29,7 @@ export const saveRoom = async (image: string, prevState: unknown, formData: Form
             data: {
                 name,
                 description,
-                image, // use the function parameter 'image'
+                image,
                 price,
                 capacity,
                 RoomAmenities: {
