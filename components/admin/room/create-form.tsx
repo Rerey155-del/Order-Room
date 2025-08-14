@@ -4,12 +4,12 @@ const CreateForm = () => {
     return (
         <form action="" className="grid md:grid-cols-12 gap-5">
             {/* Kolom Kiri */}
-            <div className="md:col-span-8">
+            <div className="md:col-span-8 bg-white rounded-sm p-4">
                 <div className="mb-4">
                     <input
                         type="text"
                         name="name"
-                        className="py-2 px-4 rounded-sm border border-gray-400 w-full"
+                        className="py-2 px-4 rounded-sm bg-white border border-gray-400 w-full"
                         placeholder="Room Name..."
                     />
                     <div aria-live="polite" aria-atomic="true">
@@ -20,7 +20,7 @@ const CreateForm = () => {
                 <div className="mb-4">
                     <textarea
                         name="description"
-                        className="py-2 px-4 rounded-sm border border-gray-400 w-full"
+                        className="py-2 px-4 rounded-sm bg-white border border-gray-400 w-full"
                         placeholder="Description..."
                     ></textarea>
                     <div aria-live="polite" aria-atomic="true">
@@ -63,7 +63,7 @@ const CreateForm = () => {
                     <input
                         type="text"
                         name="capacity"
-                        className="py-2 px-4 rounded-sm border border-gray-400 w-full"
+                        className="py-2 px-4 rounded-sm border bg-white border-gray-400 w-full"
                         placeholder="Capacity..."
                     />
                     <div aria-live="polite" aria-atomic="true">
@@ -75,7 +75,7 @@ const CreateForm = () => {
                     <input
                         type="text"
                         name="price"
-                        className="py-2 px-4 rounded-sm border border-gray-400 w-full"
+                        className="py-2 px-4 rounded-sm border bg-white border-gray-400 w-full"
                         placeholder="Price..."
                     />
                     <div aria-live="polite" aria-atomic="true">
