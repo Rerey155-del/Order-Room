@@ -5,8 +5,9 @@ import Image from "next/image";
 import { type PutBlobResult } from "@vercel/blob";
 import { BarLoader } from "react-spinners";
 import { IoTrashOutline } from "react-icons/io5";
+import { Amenities } from "@prisma/client";
 
-const CreateForm = () => {
+const CreateForm = ({amenities}:{amenities: Amenities[]}) => {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [image, setImage] = useState("")
     const [message, setMessage] = useState("")
