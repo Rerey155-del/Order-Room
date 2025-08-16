@@ -29,3 +29,16 @@ export const getRooms = async () => {
         throw new Error("Failed to fetch rooms");
     }
 };
+export const getRoomsById = async (roomId: string) => {
+
+    try {
+        const result = await prisma.room.findUnique({
+            where: { id : roomId },
+            include: { RoomAmenities: { select: { amenitiesId: true } } }
+
+        });
+        return result;
+    } catch (error) {
+        throw new Error("Failed to fetch rooms");
+    }
+};
