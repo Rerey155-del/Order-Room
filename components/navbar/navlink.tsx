@@ -78,7 +78,7 @@ const Navlink = () => {
                 <ul className="flex flex-col font-semibold text-sm uppercase p-6 pt-16 space-y-4 text-black">
                     <li><Link href="/" onClick={() => setOpen(false)}>Home</Link></li>
                     <li><Link href="/about" onClick={() => setOpen(false)}>About</Link></li>
-                    <li><Link href="/rooms" onClick={() => setOpen(false)}>Rooms</Link></li>
+                    <li><Link href="/room" onClick={() => setOpen(false)}>Room</Link></li>
                     <li><Link href="/contact" onClick={() => setOpen(false)}>Contact</Link></li>
                     {session && (
                         <>
@@ -131,7 +131,7 @@ const Navlink = () => {
             <div className="hidden md:flex md:items-center md:space-x-10 font-semibold text-sm uppercase">
                 <Link href="/" className="py-2 px-3 text-black hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0">Home</Link>
                 <Link href="/about" className="py-2 px-3 text-black hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0">About</Link>
-                <Link href="/rooms" className="py-2 px-3 text-black hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0">Rooms</Link>
+                <Link href="/room" className="py-2 px-3 text-black hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0">Room</Link>
                 <Link href="/contact" className="py-2 px-3 text-black hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0">Contact</Link>
                 {session && (
                     <>
